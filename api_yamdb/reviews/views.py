@@ -2,4 +2,4 @@ from django.shortcuts import render
 
 
 def index(context):
-    print(122812)
+    print('Новый текст в принте по заявкам.')
