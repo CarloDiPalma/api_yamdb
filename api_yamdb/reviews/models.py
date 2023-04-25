@@ -5,6 +5,10 @@ from django.db import models
 User = get_user_model()
 
 
+class Composition(models.Model):
+    pass
+
+
 class Review(models.Model):
     author = models.ForeignKey(
         User,
@@ -13,7 +17,7 @@ class Review(models.Model):
         verbose_name='Автор отзыва',
         help_text='Автор отзыва'
     )
-    сomposition = models.ForeignKey(
+    composition = models.ForeignKey(
         Composition,
         on_delete=models.CASCADE,
         related_name='reviews',
@@ -44,8 +48,8 @@ class Review(models.Model):
         constraints = (
             models.UniqueConstraint(
                 fields=['author', 'composition'],
-                name=['one author = one review per composition']
-            )
+                name='one author = one review per composition'
+            ),
         )
 
     def __str__(self):
