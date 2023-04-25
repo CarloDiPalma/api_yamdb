@@ -1,8 +1,12 @@
-from django.contrib.auth import get_user_model
+# from django.contrib.auth import get_user_model
+from django.contrib.auth.base_user import AbstractBaseUser
 from django.core.validators import MinValueValidator
 from django.db import models
 
-User = get_user_model()
+# User = get_user_model()
+
+class User(AbstractBaseUser):
+    pass
 
 
 class Titles(models.Model):
@@ -33,7 +37,7 @@ class Review(models.Model):
         verbose_name='Дата публикации отзыва',
         help_text='Дата публикации отзыва'
     )
-    rating = models.IntegerField(
+    score = models.IntegerField(
         verbose_name='Оценка произведению',
         help_text='Введите оценку произведению',
         # Оценка может быть целым числом от 1 до 10
