@@ -9,13 +9,14 @@ class User(AbstractUser):
         ("user", "User"),
     )
     role = models.CharField(
+        'Роль',
         choices=USER_LEVEL_CHOICES,
         blank=True,
         default="user"
     ),
     bio = models.TextField(
+        'Биография',
         null=True,
         blank=True,
-        verbose_name='Биография',
         help_text='Биография'
     )
