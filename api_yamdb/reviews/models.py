@@ -50,7 +50,9 @@ class Title(models.Model):
         related_name='titles',
         blank=True,
         verbose_name='Жанр',
-        help_text='Здесь нужно выбрать жанр.',
+        help_text='Здесь нужно выбрать жанр. '
+        'Чтобы выбрать несколько удерживайте Ctrl (Win), или Cmd (Mac)',
+        through='TitlesGenres'
     )
     category = models.ForeignKey(
         'Category',
@@ -92,3 +94,16 @@ class Category(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class TitlesGenres(models.Model):
+    title = models.ForeignKey(Title, on_delete=models.CASCADE)
+    genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
+
+    class Meta:
+        auto_created = True
+        verbose_name = 'Произведение+жанр'
+        verbose_name_plural = 'Произведения+жанры'
+
+    def __str__(self):
+        return (f'Связь {self.title}, {self.genre} разорвана будет разорвана.')
