@@ -1,6 +1,6 @@
 from django.core.management.base import BaseCommand
 import csv
-from reviews.models import Title, Category, Genre, TitlesGenres
+from reviews.models import Title, Category, Genre, TitleGenre
 
 
 class Command(BaseCommand):
@@ -44,7 +44,7 @@ class Command(BaseCommand):
                 id = row['id']
                 title = Title.objects.get(id=row['title_id'])
                 genre = Genre.objects.get(id=row['genre_id'])
-                staff = TitlesGenres(id=id, title=title, genre=genre)
+                staff = TitleGenre(id=id, title=title, genre=genre)
                 staff.save()
         csv_file.close()
         print('Cвязи категории и жанров загружены.')

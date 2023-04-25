@@ -52,7 +52,7 @@ class Title(models.Model):
         verbose_name='Жанр',
         help_text='Здесь нужно выбрать жанр. '
         'Чтобы выбрать несколько удерживайте Ctrl (Win), или Cmd (Mac)',
-        through='TitlesGenres'
+        through='TitleGenre'
     )
     category = models.ForeignKey(
         'Category',
@@ -96,14 +96,21 @@ class Category(models.Model):
         return self.name
 
 
-class TitlesGenres(models.Model):
+class TitleGenre(models.Model):
     title = models.ForeignKey(Title, on_delete=models.CASCADE)
     genre = models.ForeignKey(Genre, on_delete=models.CASCADE)
 
     class Meta:
-        auto_created = True
+        #  после создания базы раскоментить
+        #auto_created = True
         verbose_name = 'Произведение+жанр'
         verbose_name_plural = 'Произведения+жанры'
+        constraints = (
+            models.UniqueConstraint(
+                fields=['title', 'genre'],
+                name='one title = one genre'
+            ),
+        )
 
     def __str__(self):
         return (f'Связь {self.title}, {self.genre} разорвана будет разорвана.')
