@@ -5,7 +5,7 @@ from django.db import models
 User = get_user_model()
 
 
-class Composition(models.Model):
+class Titles(models.Model):
     pass
 
 
@@ -18,7 +18,7 @@ class Review(models.Model):
         help_text='Автор отзыва'
     )
     composition = models.ForeignKey(
-        Composition,
+        Titles,
         on_delete=models.CASCADE,
         related_name='reviews',
         verbose_name='Произведение',
