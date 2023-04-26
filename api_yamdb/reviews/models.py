@@ -10,7 +10,7 @@ class Review(models.Model):
         verbose_name='Автор отзыва',
         help_text='Автор отзыва'
     )
-    composition = models.ForeignKey(
+    title = models.ForeignKey(
         Title,
         on_delete=models.CASCADE,
         related_name='reviews',
