@@ -1,16 +1,5 @@
-# from django.contrib.auth import get_user_model
-from django.contrib.auth.base_user import AbstractBaseUser
-from django.core.validators import MinValueValidator
+from django.core.validators import MinValueValidator, MaxValueValidator
 from django.db import models
-
-# User = get_user_model()
-
-class User(AbstractBaseUser):
-    pass
-
-
-class Titles(models.Model):
-    pass
 
 
 class Review(models.Model):
@@ -22,7 +11,7 @@ class Review(models.Model):
         help_text='Автор отзыва'
     )
     composition = models.ForeignKey(
-        Titles,
+        Title,
         on_delete=models.CASCADE,
         related_name='reviews',
         verbose_name='Произведение',
@@ -43,7 +32,7 @@ class Review(models.Model):
         # Оценка может быть целым числом от 1 до 10
         validators=[
             MinValueValidator(1),
-            MinValueValidator(10)
+            MaxValueValidator(10)
         ],
     )
 
@@ -51,7 +40,7 @@ class Review(models.Model):
         """Делаем ограничение на количество ревью одним автором."""
         constraints = (
             models.UniqueConstraint(
-                fields=['author', 'composition'],
+                fields=['author', 'title'],
                 name='one author = one review per composition'
             ),
         )
