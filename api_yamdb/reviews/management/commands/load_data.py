@@ -1,6 +1,7 @@
 from django.core.management.base import BaseCommand
 import csv
-from reviews.models import Title, Category, Genre, User, Comment, Review
+from reviews.models import Title, Category, Genre, Comment, Review
+from users.models import User
 
 
 class Command(BaseCommand):
@@ -54,8 +55,8 @@ class Command(BaseCommand):
                 id = row['id']
                 username = row['username']
                 email = row['email']
-                # role = row['role']
-                staff = User(id=id, username=username, email=email,)  # role=role) когда будет наш юзер с ролями разкоментить
+                role = row['role']
+                staff = User(id=id, username=username, email=email, role=role)
                 staff.save()
         csv_file.close()
         print('Юзеры загружены.')
