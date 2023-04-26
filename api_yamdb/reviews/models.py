@@ -70,9 +70,6 @@ class Title(models.Model):
     def __str__(self):
         return self.name
 
-    def get_rating(self):
-        pass
-
 
 class Category(models.Model):
     name = models.CharField(
