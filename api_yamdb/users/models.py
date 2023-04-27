@@ -24,3 +24,12 @@ class User(AbstractUser):
         max_length=1024,
         blank=True
     )
+
+    def is_admin(self):
+        return self.is_staff or self.role == ADMIN_ROLE
+
+    def is_moderator(self):
+        return self.role == MODERATOR_ROLE
+
+    def is_user(self):
+        return self.role == USER_ROLE
