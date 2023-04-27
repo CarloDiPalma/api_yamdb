@@ -55,3 +55,14 @@ class SignUpSerializer(serializers.ModelSerializer):
             'username', 'email'
         )
         model = User
+
+
+class GetTokenSerializer(serializers.Serializer):
+    username = serializers.CharField(
+        max_length=150,
+        required=True
+    )
+    confirmation_code = serializers.CharField(
+        max_length=6,
+        required=True
+    )
