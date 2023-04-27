@@ -11,6 +11,6 @@ router_v1.register('v1/users', UserViewSet)
 router_v1.register('v1/', UserViewSet)
 
 urlpatterns = [
-    path('some', views.get_some),
+    path('v1/auth/signup/', views.signup),
     path('', include(router_v1.urls)),
 ]
