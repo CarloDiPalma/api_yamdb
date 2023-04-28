@@ -19,6 +19,10 @@ class User(AbstractUser):
         default=USER_ROLE,
         blank=True
     )
+    confirmation_code = models.CharField(
+        max_length=6,
+        blank=True
+    )
     bio = models.TextField(
         verbose_name='Биография',
         max_length=1024,
