@@ -1,5 +1,5 @@
-import string
 import random
+import string
 
 CODE_SIZE = 6
 

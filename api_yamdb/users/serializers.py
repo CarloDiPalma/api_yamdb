@@ -4,8 +4,19 @@ from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.ReadOnlyField(
-        read_only=True
+    username = serializers.SlugField(
+        read_only=True,
+        max_length=150
+    )
+    email = serializers.EmailField(
+        max_length=254,
+        required=True
+    )
+    first_name = serializers.SlugField(
+        max_length=150
+    )
+    last_name = serializers.SlugField(
+        max_length=150
     )
     role = serializers.ReadOnlyField()
 
@@ -18,7 +29,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class SignUpSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(
+    username = serializers.SlugField(
         max_length=150,
         required=True
     )
