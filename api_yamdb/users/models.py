@@ -13,10 +13,24 @@ ROLE_CHOICES = (
 
 
 class User(AbstractUser):
+    first_name = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True
+    )
+    last_name = models.CharField(
+        max_length=150,
+        blank=True,
+        null=True
+    )
     role = models.CharField(
         max_length=20,
         choices=ROLE_CHOICES,
         default=USER_ROLE,
+        blank=True
+    )
+    confirmation_code = models.CharField(
+        max_length=6,
         blank=True
     )
     bio = models.TextField(
@@ -24,6 +38,9 @@ class User(AbstractUser):
         max_length=1024,
         blank=True
     )
+
+    class Meta:
+        ordering = ['-id']
 
     def is_admin(self):
         return self.is_staff or self.role == ADMIN_ROLE

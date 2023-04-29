@@ -1,18 +1,15 @@
 from django.shortcuts import get_object_or_404
-
 from django_filters.rest_framework import (CharFilter, DjangoFilterBackend,
                                            FilterSet)
 from rest_framework import filters, mixins, viewsets
 from rest_framework.pagination import LimitOffsetPagination
-from reviews.models import Category, Genre, Title, Review
 
-from .permissions import AuthorAdminModeratorOrReadOnly
-from .serializers import (CategorySerializer,
-                          GenreSerializer,
-                          TitleSerializer,
-                          ReviewSerializer,
-                          CommentSerializer
-                          )
+from reviews.models import Category, Comment, Genre, Review, Title
+
+from .permissions import AdminOrReadOnly, AuthorAdminModeratorOrReadOnly
+from .serializers import (CategorySerializer, CommentSerializer,
+                          CreateTitleSerializer, GenreSerializer,
+                          ReviewSerializer, TitleSerializer)
 
 
 class CreateListViewSet(
@@ -36,14 +33,22 @@ class TitleFilter(FilterSet):
 
 class TitleViewSet(viewsets.ModelViewSet):
     queryset = Title.objects.all()
+    permission_classes = (AdminOrReadOnly,)
     serializer_class = TitleSerializer
+    create_serializer_class = CreateTitleSerializer
     pagination_class = LimitOffsetPagination
     filter_backends = (DjangoFilterBackend,)
     filterset_class = TitleFilter
 
+    def get_serializer_class(self):
+        if self.action == 'create' or self.action == 'partial_update':
+            return self.create_serializer_class
+        return self.serializer_class
+
 
 class CategoryViewSet(CreateListViewSet):
     queryset = Category.objects.all()
+    permission_classes = (AdminOrReadOnly,)
     serializer_class = CategorySerializer
     pagination_class = LimitOffsetPagination
     lookup_field = 'slug'
@@ -53,6 +58,7 @@ class CategoryViewSet(CreateListViewSet):
 
 class GenreViewSet(CreateListViewSet):
     queryset = Genre.objects.all()
+    permission_classes = (AdminOrReadOnly,)
     serializer_class = GenreSerializer
     pagination_class = LimitOffsetPagination
     lookup_field = 'slug'
