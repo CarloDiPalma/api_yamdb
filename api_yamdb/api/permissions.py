@@ -1,4 +1,4 @@
-from rest_framework.permissions import BasePermission, SAFE_METHODS
+from rest_framework.permissions import SAFE_METHODS, BasePermission
 
 
 class AuthorAdminModeratorOrReadOnly(BasePermission):
@@ -15,3 +15,19 @@ class AuthorAdminModeratorOrReadOnly(BasePermission):
         return (user.is_authenticated
                 and (obj.author == user or user.is_admin or user.is_moderator)
                 )
+
+
+class AdminOrReadOnly(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        return (
+            request.method in SAFE_METHODS
+            or user.is_authenticated and user.is_admin
+        )
+
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+        return (
+            request.method in SAFE_METHODS
+            or user.is_authenticated and user.is_admin
+        )
