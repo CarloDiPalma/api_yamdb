@@ -1,20 +1,14 @@
 from django.shortcuts import get_object_or_404
-
 from django_filters.rest_framework import (CharFilter, DjangoFilterBackend,
                                            FilterSet)
 from rest_framework import filters, mixins, viewsets
 from rest_framework.pagination import LimitOffsetPagination
+from reviews.models import Category, Comment, Genre, Review, Title
 
-from reviews.models import Category, Genre, Title, Review, Comment
-
-from .permissions import AuthorAdminModeratorOrReadOnly, AdminOrReadOnly
-from .serializers import (CategorySerializer,
-                          GenreSerializer,
-                          TitleSerializer,
-                          CreateTitleSerializer,
-                          ReviewSerializer,
-                          CommentSerializer
-                          )
+from .permissions import AdminOrReadOnly, AuthorAdminModeratorOrReadOnly
+from .serializers import (CategorySerializer, CommentSerializer,
+                          CreateTitleSerializer, GenreSerializer,
+                          ReviewSerializer, TitleSerializer)
 
 
 class CreateListViewSet(
