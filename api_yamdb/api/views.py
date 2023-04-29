@@ -9,8 +9,7 @@ from rest_framework.response import Response
 
 from reviews.models import Category, Genre, Review, Title
 
-from .permissions import (AdminOrReadOnly, AuthorAdminModeratorOrReadOnly,
-                          CommentPermissions)
+from .permissions import AdminOrReadOnly, AuthorAdminModeratorOrReadOnly
 
 from .serializers import (CategorySerializer, CommentSerializer,
                           CreateTitleSerializer, GenreSerializer,
@@ -67,7 +66,6 @@ class CategoryViewSet(viewsets.ModelViewSet):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
-
 class GenreViewSet(CreateListViewSet):
     queryset = Genre.objects.all()
     permission_classes = (AdminOrReadOnly,)
@@ -79,7 +77,6 @@ class GenreViewSet(CreateListViewSet):
 
     def retrieve(self, request, pk=None, **kwargs):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
@@ -104,7 +101,7 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     serializer_class = CommentSerializer
-    permission_classes = (CommentPermissions,)
+    permission_classes = (AuthorAdminModeratorOrReadOnly,)
 
     def get_queryset(self):
         return get_object_or_404(
