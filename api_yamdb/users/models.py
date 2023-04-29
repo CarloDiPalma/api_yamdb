@@ -39,6 +39,9 @@ class User(AbstractUser):
         blank=True
     )
 
+    class Meta:
+        ordering = ['-id']
+
     def is_admin(self):
         return self.is_staff or self.role == ADMIN_ROLE
 

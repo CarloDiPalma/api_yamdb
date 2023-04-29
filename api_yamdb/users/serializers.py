@@ -5,13 +5,19 @@ from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.CharField(
-        max_length=150,
-        validators=[UnicodeUsernameValidator()],
-    )
     email = serializers.EmailField(
         max_length=254
     )
+
+    class Meta:
+        fields = (
+            'username', 'email', 'first_name', 'last_name', 'bio', 'role'
+        )
+        model = User
+
+
+class UserProfileSerializer(serializers.ModelSerializer):
+    role = serializers.ReadOnlyField()
 
     class Meta:
         fields = (
