@@ -72,14 +72,15 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return get_object_or_404(
-            Review, pk=self.kwargs.get('title_id')
-        ).reviews.all()
+            Title,
+            pk=self.kwargs.get('title_id')
+        ).reviews.select_related('author')
 
     def perform_create(self, serializer):
         serializer.save(
             author=self.request.user,
-            **{self.title: get_object_or_404(
-                self.Title, pk=self.kwargs.get(self.title_id)
+            **{'title': get_object_or_404(
+                Title, pk=self.kwargs.get('title_id')
             )
             }
         )
@@ -91,16 +92,16 @@ class CommentViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         return get_object_or_404(
-            Comment,
+            Review,
             pk=self.kwargs.get('review_id')
-        ).comments.all()
+        ).comments.select_related('author')
 
     def perform_create(self, serializer):
         serializer.save(
             author=self.request.user,
-            **{self.review: get_object_or_404(
-                self.Review,
-                pk=self.kwargs.get(self.review_id)
+            **{'review': get_object_or_404(
+                Review,
+                pk=self.kwargs.get('review_id')
             )
             }
         )
