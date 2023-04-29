@@ -22,7 +22,7 @@ class UserViewSet(viewsets.ModelViewSet):
     pagination_class = CustomPagination
     filter_backends = (filters.SearchFilter,)
     search_fields = ('username',)
-    lookup_field = "username"
+    lookup_field = 'username'
     http_method_names = ['get', 'post', 'patch', 'delete']
 
     def create(self, request, **kwargs):
@@ -75,11 +75,11 @@ def get_token(request):
 @api_view(['PATCH', 'GET'])
 @permission_classes([IsAuthenticated])
 def me(request):
-    if request.method == "GET":
+    if request.method == 'GET':
         serializer = UserProfileSerializer(request.user)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    if request.method == "PATCH":
+    if request.method == 'PATCH':
         serializer = UserProfileSerializer(
             request.user, partial=True, data=request.data
         )
