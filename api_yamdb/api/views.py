@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.db.models import Avg
 from django_filters.rest_framework import (CharFilter, DjangoFilterBackend,
                                            FilterSet)
 from rest_framework import filters, mixins, viewsets
@@ -32,7 +33,7 @@ class TitleFilter(FilterSet):
 
 
 class TitleViewSet(viewsets.ModelViewSet):
-    queryset = Title.objects.all()
+    queryset = Title.objects.annotate(rating=Avg("reviews__score"))
     permission_classes = (AdminOrReadOnly,)
     serializer_class = TitleSerializer
     create_serializer_class = CreateTitleSerializer
