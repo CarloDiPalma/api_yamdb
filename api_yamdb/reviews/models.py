@@ -130,6 +130,7 @@ class Review(models.Model):
 
     class Meta:
         """Делаем ограничение на количество ревью одним автором."""
+        ordering = ['-id']
         constraints = (
             models.UniqueConstraint(
                 fields=['author', 'title'],
