@@ -8,7 +8,7 @@ from users.models import User
 
 class Genre(models.Model):
     name = models.CharField(
-        max_length=100,
+        max_length=256,
         verbose_name='Название жанра',
         help_text='Здесь нужно ввести название жанра.',
     )
@@ -29,7 +29,7 @@ class Genre(models.Model):
 
 class Title(models.Model):
     name = models.CharField(
-        max_length=200,
+        max_length=256,
         verbose_name='Название произведения',
         help_text='Здесь нужно ввести название произведения.',
     )
@@ -75,7 +75,7 @@ class Title(models.Model):
 
 class Category(models.Model):
     name = models.CharField(
-        max_length=100,
+        max_length=256,
         verbose_name='Название категории',
         help_text='Здесь нужно ввести название категории.',
     )
