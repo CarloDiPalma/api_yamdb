@@ -2,6 +2,7 @@ from django_filters.rest_framework import (CharFilter, DjangoFilterBackend,
                                            FilterSet)
 from rest_framework import filters, mixins, viewsets
 from rest_framework.pagination import LimitOffsetPagination
+
 from reviews.models import Category, Genre, Title
 
 from .serializers import CategorySerializer, GenreSerializer, TitleSerializer

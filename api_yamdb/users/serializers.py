@@ -1,37 +1,30 @@
+from django.contrib.auth.validators import UnicodeUsernameValidator
 from rest_framework import serializers
 
 from .models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
-    username = serializers.SlugField(
-        read_only=True,
-        max_length=150
+    username = serializers.CharField(
+        max_length=150,
+        validators=[UnicodeUsernameValidator()],
     )
     email = serializers.EmailField(
-        max_length=254,
-        required=True
+        max_length=254
     )
-    first_name = serializers.SlugField(
-        max_length=150
-    )
-    last_name = serializers.SlugField(
-        max_length=150
-    )
-    role = serializers.ReadOnlyField()
 
     class Meta:
         fields = (
             'username', 'email', 'first_name', 'last_name', 'bio', 'role'
         )
         model = User
-        read_only_fields = ('username', 'role')
 
 
 class SignUpSerializer(serializers.ModelSerializer):
     username = serializers.SlugField(
         max_length=150,
-        required=True
+        required=True,
+        validators=[UnicodeUsernameValidator()],
     )
     email = serializers.EmailField(
         max_length=254,

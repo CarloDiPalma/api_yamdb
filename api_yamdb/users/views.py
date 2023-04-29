@@ -1,12 +1,14 @@
-from django.core.mail import send_mail
 from rest_framework import status, viewsets
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework.pagination import LimitOffsetPagination
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
-from .generators.confirm_code_generator import generator
-from .generators.token_generator import get_tokens_for_user
 from .models import User
+from .permissions import AdminAndSuperUser
+from .registration.confirm_code_generator import generator
+from .registration.send_code_to_email import send_confirm_code_to_email
+from .registration.token_generator import get_tokens_for_user
 from .serializers import GetTokenSerializer, SignUpSerializer, UserSerializer
 
 
@@ -14,6 +16,14 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     pagination_class = LimitOffsetPagination
+    permission_classes = (AdminAndSuperUser,)
+
+    def create(self, request, **kwargs):
+        serializer = UserSerializer(data=request.data)
+        if serializer.is_valid():
+            user, created = User.objects.get_or_create(**serializer.data)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['POST'])
@@ -29,13 +39,7 @@ def signup(request):
         )
         user.confirmation_code = generator()
         user.save()
-        send_mail(
-            'Confirmation code for registration on Yamdb',
-            user.confirmation_code,
-            'from@example.com',
-            [email],
-            fail_silently=False
-        )
+        send_confirm_code_to_email(user, email)
         return Response(serializer.data, status=status.HTTP_200_OK)
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
@@ -57,7 +61,8 @@ def get_token(request):
     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(['PATCH'])
+@api_view(['PATCH', 'GET'])
+@permission_classes([IsAuthenticated])
 def me(request):
     serializer = GetTokenSerializer(data=request.data)
     if serializer.is_valid():
