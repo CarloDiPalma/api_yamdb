@@ -24,6 +24,8 @@ class AdminOrReadOnly(BasePermission):
         if not user.is_anonymous:
             if user.role == 'user' or user.role == 'moderator':
                 return False
+        # if request.method == 'GET':
+        #     return False
         return (
             request.method in SAFE_METHODS
             or user.is_authenticated and user.is_admin
@@ -59,3 +61,19 @@ class CommentPermissions(BasePermission):
         return (user.is_authenticated
                 and (obj.author == user or user.is_admin or user.is_moderator)
                 )
+
+
+class CategoryPermissions(BasePermission):
+    def has_permission(self, request, view):
+        user = request.user
+        return (
+            request.method in SAFE_METHODS
+            or user.is_authenticated and user.is_admin
+        )
+
+    def has_object_permission(self, request, view, obj):
+        user = request.user
+        return (
+            request.method in SAFE_METHODS
+            or user.is_authenticated and user.is_admin
+        )
