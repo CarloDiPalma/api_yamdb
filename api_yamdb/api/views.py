@@ -1,16 +1,17 @@
-from django.shortcuts import get_object_or_404
 from django.db.models import Avg
+from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import (CharFilter, DjangoFilterBackend,
                                            FilterSet)
 
-from rest_framework import filters, mixins, viewsets, status
+from rest_framework import filters, mixins, status, viewsets
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.response import Response
 
-from reviews.models import Category, Comment, Genre, Review, Title
+from reviews.models import Category, Genre, Review, Title
 
-from .permissions import AdminOrReadOnly, AuthorAdminModeratorOrReadOnly, \
-    CommentPermissions, CategoryPermissions
+from .permissions import (AdminOrReadOnly, AuthorAdminModeratorOrReadOnly,
+                          CommentPermissions)
+
 from .serializers import (CategorySerializer, CommentSerializer,
                           CreateTitleSerializer, GenreSerializer,
                           ReviewSerializer, TitleSerializer)
@@ -65,6 +66,8 @@ class CategoryViewSet(viewsets.ModelViewSet):
     def partial_update(self, request, slug):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
+
+
 class GenreViewSet(CreateListViewSet):
     queryset = Genre.objects.all()
     permission_classes = (AdminOrReadOnly,)
@@ -76,6 +79,8 @@ class GenreViewSet(CreateListViewSet):
 
     def retrieve(self, request, pk=None, **kwargs):
         return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
+
+
 
 class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
