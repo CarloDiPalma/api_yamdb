@@ -64,15 +64,11 @@ class ReviewViewSet(viewsets.ModelViewSet):
     serializer_class = ReviewSerializer
     permission_classes = (AuthorAdminModeratorOrReadOnly,)
 
-    base_model = Title
-    id_name = "title_id"
-    record_name = "title"
-
     def get_queryset(self):
         return get_object_or_404(
             Title,
             pk=self.kwargs.get('title_id')
-        ).reviews.select_related("author")
+        ).reviews.select_related('author')
 
     def perform_create(self, serializer):
         serializer.save(
@@ -92,7 +88,7 @@ class CommentViewSet(viewsets.ModelViewSet):
         return get_object_or_404(
             Review,
             pk=self.kwargs.get('review_id')
-        ).comments.select_related("author")
+        ).comments.select_related('author')
 
     def perform_create(self, serializer):
         serializer.save(
