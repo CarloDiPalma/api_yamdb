@@ -71,8 +71,8 @@ http://127.0.0.1/redoc/
 - Git
 - SQLite3
 - Simple JWT
+
 ## Команда разработки
 [Maksim-Good](https://github.com/Maksim-Good) - категории, жанры, импорт данных.
 [dim3p](https://github.com/dim3p) - рейтинг произведений, отзывы, комментарии.
 [CarloDiPalma](https://github.com/CarloDiPalma) - работа с токеном, регистрация, аутентификация, права доступа.
-
