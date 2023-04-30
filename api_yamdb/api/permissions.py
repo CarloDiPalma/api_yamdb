@@ -18,7 +18,7 @@ class AdminOrReadOnly(BasePermission):
     def has_permission(self, request, view):
         user = request.user
         if not user.is_anonymous:
-            if user.is_user or user.is_moderator:
+            if user.role == 'user' or user.role == 'moderator':
                 return False
         return (
             request.method in SAFE_METHODS
