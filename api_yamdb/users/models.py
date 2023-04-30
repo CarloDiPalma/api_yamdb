@@ -1,18 +1,18 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-USER_ROLE = 'user'
-MODERATOR_ROLE = 'moderator'
-ADMIN_ROLE = 'admin'
-
-ROLE_CHOICES = (
-    (USER_ROLE, 'Пользователь'),
-    (MODERATOR_ROLE, 'Модератор'),
-    (ADMIN_ROLE, 'Администратор'),
-)
-
 
 class User(AbstractUser):
+    USER_ROLE = 'user'
+    MODERATOR_ROLE = 'moderator'
+    ADMIN_ROLE = 'admin'
+
+    ROLE_CHOICES = (
+        (USER_ROLE, 'Пользователь'),
+        (MODERATOR_ROLE, 'Модератор'),
+        (ADMIN_ROLE, 'Администратор'),
+    )
+
     first_name = models.CharField(
         max_length=150,
         blank=True,
@@ -44,12 +44,12 @@ class User(AbstractUser):
 
     @property
     def is_admin(self):
-        return self.is_staff or self.role == ADMIN_ROLE
+        return self.is_staff or self.role == User.ADMIN_ROLE
 
     @property
     def is_moderator(self):
-        return self.role == MODERATOR_ROLE
+        return self.role == User.MODERATOR_ROLE
 
     @property
     def is_user(self):
-        return self.role == USER_ROLE
+        return self.role == User.USER_ROLE
