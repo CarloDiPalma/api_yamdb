@@ -2,15 +2,14 @@ from django.db.models import Avg
 from django.shortcuts import get_object_or_404
 from django_filters.rest_framework import (CharFilter, DjangoFilterBackend,
                                            FilterSet)
-
-from rest_framework import filters, mixins, status, viewsets
+from rest_framework import filters, mixins, viewsets
+from rest_framework.mixins import (CreateModelMixin, DestroyModelMixin,
+                                   ListModelMixin)
 from rest_framework.pagination import LimitOffsetPagination
-from rest_framework.response import Response
 
 from reviews.models import Category, Genre, Review, Title
 
 from .permissions import AdminOrReadOnly, AuthorAdminModeratorOrReadOnly
-
 from .serializers import (CategorySerializer, CommentSerializer,
                           CreateTitleSerializer, GenreSerializer,
                           ReviewSerializer, TitleSerializer)
@@ -50,7 +49,8 @@ class TitleViewSet(viewsets.ModelViewSet):
         return self.serializer_class
 
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class CategoryViewSet(CreateModelMixin, ListModelMixin,
+                      DestroyModelMixin, viewsets.GenericViewSet):
     queryset = Category.objects.all()
     permission_classes = (AdminOrReadOnly,)
     serializer_class = CategorySerializer
@@ -59,14 +59,9 @@ class CategoryViewSet(viewsets.ModelViewSet):
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
 
-    def retrieve(self, request, pk=None, **kwargs):
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
-    def partial_update(self, request, slug):
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
-
-
-class GenreViewSet(CreateListViewSet):
+class GenreViewSet(CreateModelMixin, ListModelMixin,
+                   DestroyModelMixin, viewsets.GenericViewSet):
     queryset = Genre.objects.all()
     permission_classes = (AdminOrReadOnly,)
     serializer_class = GenreSerializer
@@ -74,9 +69,6 @@ class GenreViewSet(CreateListViewSet):
     lookup_field = 'slug'
     filter_backends = (filters.SearchFilter,)
     search_fields = ('name',)
-
-    def retrieve(self, request, pk=None, **kwargs):
-        return Response(status=status.HTTP_405_METHOD_NOT_ALLOWED)
 
 
 class ReviewViewSet(viewsets.ModelViewSet):
