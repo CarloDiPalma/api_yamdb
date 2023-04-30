@@ -116,7 +116,7 @@ class Review(models.Model):
         verbose_name='Дата публикации отзыва',
         help_text='Дата публикации отзыва'
     )
-    score = models.PositiveIntegerField(
+    score = models.PositiveSmallIntegerField(
         verbose_name='Оценка произведению',
         help_text='Введите оценку произведению',
         # Оценка может быть целым числом от 1 до 10
