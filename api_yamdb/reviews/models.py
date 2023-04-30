@@ -116,13 +116,13 @@ class Review(models.Model):
         verbose_name='Дата публикации отзыва',
         help_text='Дата публикации отзыва'
     )
-    score = models.IntegerField(
+    score = models.PositiveIntegerField(
         verbose_name='Оценка произведению',
         help_text='Введите оценку произведению',
         # Оценка может быть целым числом от 1 до 10
         validators=[
-            MinValueValidator(1),
-            MaxValueValidator(10)
+            MinValueValidator(1, message='Минимальная оценка 1'),
+            MaxValueValidator(10, message='Максимальная оценка 10')
         ],
     )
 
