@@ -15,6 +15,62 @@
 
 Список эндпоинтов и документация доступны по адресу: http://127.0.0.1:8000/redoc/
 
+# Подготовка и запуск проекта
+
+Cоздать и активировать виртуальное окружение:
+
+```
+python -m venv env
+```
+
+```
+source env/bin/activate
+```
+
+```
+python -m pip install --upgrade pip
+```
+
+Установить зависимости из файла requirements.txt:
+
+```
+pip install -r requirements.txt
+```
+
+Перейти в основную папку и выполнить миграции:
+
+```
+cd api_yamdb
+```
+
+Выполнить миграцию:
+
+```
+python manage.py migrate
+```
+
+Заполненить базу данных CSV-файлами:
+
+```
+python manage.py load_data
+```
+
+Запустить проект:
+
+```
+python manage.py runserver
+```
+
+# Документация к API
+Документация к API доступна после запуска проекта по ссылке:
+http://127.0.0.1/redoc/
+
+# Используемые технологии
+- Python
+- Django REST framework
+- Git
+- SQLite3
+- Simple JWT
 ## Команда разработки
 [Maksim-Good](https://github.com/Maksim-Good) - категории, жанры, импорт данных.
 [dim3p](https://github.com/dim3p) - рейтинг произведений, отзывы, комментарии.
