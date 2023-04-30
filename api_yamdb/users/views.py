@@ -1,6 +1,5 @@
 from rest_framework import filters, status, viewsets
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -17,7 +16,6 @@ from .serializers import (GetTokenSerializer, SignUpSerializer,
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    pagination_class = LimitOffsetPagination
     permission_classes = (AdminAndSuperUser,)
     pagination_class = CustomPagination
     filter_backends = (filters.SearchFilter,)
@@ -29,7 +27,7 @@ class UserViewSet(viewsets.ModelViewSet):
         serializer = UserSerializer(data=request.data)
         if serializer.is_valid():
             email = serializer.data.get('email')
-            if User.objects.filter(email=email).first():
+            if User.objects.filter(email=email).exists():
                 return Response(serializer.errors,
                                 status=status.HTTP_400_BAD_REQUEST)
             user, created = User.objects.get_or_create(**serializer.data)
@@ -61,8 +59,7 @@ def get_token(request):
     if serializer.is_valid():
         username = serializer.data['username']
         code = serializer.data['confirmation_code']
-        if User.objects.filter(username=username).first():
-            user = User.objects.get(username=username)
+        if user := User.objects.filter(username=username).first():
             if user.confirmation_code == code:
                 token = get_tokens_for_user(user)
                 return Response(token, status=status.HTTP_200_OK)

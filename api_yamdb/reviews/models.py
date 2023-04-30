@@ -4,6 +4,7 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 
 from users.models import User
+from .validators import my_year_validator
 
 
 class Genre(models.Model):
@@ -36,10 +37,7 @@ class Title(models.Model):
     year = models.PositiveIntegerField(
         verbose_name='Год выхода',
         help_text='Здесь нужно ввести год выхода.',
-        # Год выхода с 1800 до сего года
-        validators=[
-            MinValueValidator(1800),
-            MaxValueValidator(datetime.now().year)],
+        validators=[my_year_validator],
         default=datetime.now().year,
     )
     description = models.TextField(
