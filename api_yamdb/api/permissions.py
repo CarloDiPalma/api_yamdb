@@ -31,3 +31,4 @@ class AdminOrReadOnly(BasePermission):
             request.method in SAFE_METHODS
             or user.is_authenticated and user.is_admin
         )
+
