@@ -7,5 +7,5 @@ CODE_SIZE = 6
 def generator(
     size=CODE_SIZE,
     chars=string.ascii_uppercase + string.digits
-):
+) -> str:
     return ''.join(random.choice(chars) for _ in range(size))
