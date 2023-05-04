@@ -56,7 +56,7 @@ def signup(request):
 @api_view(['POST'])
 def get_token(request):
     serializer = GetTokenSerializer(data=request.data)
-    if serializer.is_valid():
+    if serializer.is_valid(raise_exception=True):
         username = serializer.data['username']
         code = serializer.data['confirmation_code']
         if user := User.objects.filter(username=username).first():
