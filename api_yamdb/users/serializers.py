@@ -26,7 +26,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = User
 
 
-class SignUpSerializer(serializers.ModelSerializer):
+class SignUpSerializer(serializers.Serializer):
     username = serializers.SlugField(
         max_length=150,
         required=True,
@@ -59,12 +59,6 @@ class SignUpSerializer(serializers.ModelSerializer):
                     f'Почта {email} уже занята'
                 )
         return data
-
-    class Meta:
-        fields = (
-            'username', 'email'
-        )
-        model = User
 
 
 class GetTokenSerializer(serializers.Serializer):
